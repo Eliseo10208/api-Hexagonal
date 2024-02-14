@@ -9,7 +9,8 @@ export class CreateBooksController{
             const book = await this.createBooksUseCase.run(
                 data.idBooks,
                 data.name,
-                data.description
+                data.description,
+                data.password
             );
             if (book)
             res.status(201).send({
@@ -17,7 +18,8 @@ export class CreateBooksController{
                 data:{
                     idBooks : book?.idBooks,
                     name: book?.name,
-                    description: book?.description
+                    description: book?.description,
+                    password : book?.password
                 },
         });
         else

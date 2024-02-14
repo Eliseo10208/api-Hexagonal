@@ -13,7 +13,8 @@ export class MysqlBooksRepository implements BooksRepository {
                     new Books(
                         book.idBooks,
                         book.name,
-                        book.description
+                        book.description,
+                        book.password
                     )
             );
         } catch (error) {
@@ -23,13 +24,16 @@ export class MysqlBooksRepository implements BooksRepository {
     async createBook(
 idBooks: number, 
 name: string,
-description: string): Promise<Books | null> 
+description: string,
+password: string
+): Promise<Books | null>
+
     {
-        const sql = "INSERT INTO books (idBooks,name,description) VALUES (?,?,?)";
-        const params : any[] = [idBooks,name,description];
+        const sql = "INSERT INTO books (idBooks,name,description,password) VALUES (?,?,?,?)";
+        const params : any[] = [idBooks,name,description,password];
         try {
             const [result]: any = await query(sql , params);
-            return new Books(result.idBooks,name,description )
+            return new Books(result.idBooks,name,description,password )
         } catch (error) {
             return null;
         }

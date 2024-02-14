@@ -1,26 +1,30 @@
-import { buffer } from "stream/consumers";
-import { rabbit } from "../../domain/broker/broker";
-import * as amqp from 'amqplib'
+import { INotificationService } from "../../application/services/INotificationService";
+import amqp from 'amqplib';
 
-export class Broker implements rabbit{
+const url =  process.env.CLOUDAMQP_URL;
 
-     async sendMessage(name: string):Promise <void> {
+export class NotificationHelpers implements INotificationService{
+    providerChannel: amqp.Channel | undefined;
+
+ 
+    async inicializar() {
+        if(!url) return false
         try {
-            const message = `${name} supplier`
-            const connection =  await amqp.connect(
-                process.env.RABBITMQ_URL || "amqp://localhost:5672"
-            );
-            const channel = await connection.createChannel();
-            const ex = 'amqp.direct';
-            channel.publish(ex,'',Buffer.from(message));
-            await channel.close();
-            await connection.close();
-            console.log('Mensaje publicado');
+            const connection = await amqp.connect(url)
+            this.providerChannel=  await connection.createChannel()
+            this.providerChannel.assertQueue("channel1")
+
+            return true;
         } catch (error) {
-            console.log("err0r--en  elcatch", error);
+            console.log(error)
+            return false;
         }
     }
-
-
-
+    sendNotify(message: string): boolean {
+        if(this.providerChannel == undefined){
+            return false;
+        }
+        this.providerChannel.sendToQueue("channel1",Buffer.from(message))
+        return true;
+    }
 }

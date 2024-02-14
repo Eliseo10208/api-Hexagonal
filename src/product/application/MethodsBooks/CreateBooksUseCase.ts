@@ -9,16 +9,18 @@ export class CreateBooksUseCase {
     async run(
         idBooks: number,
         name: string,
-        description: string
+        description: string,
+        password:string
     ): Promise<Books | null>{
     
-    let pass = this.encryptPassword.encodePassword(name);
+    let pass = this.encryptPassword.encodePassword(password);
        
         try {
             const book = await this.bookRepository.createBook(
                 idBooks,
                 name,
-                description
+                description,
+                pass
             );
             return book;
         } catch (error) {

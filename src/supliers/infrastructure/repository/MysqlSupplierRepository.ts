@@ -27,7 +27,7 @@ async createSupplier(
         try {
             const [result]: any = await query(sql, params);
 
-            return new Supplier(result.insertId, name);
+            return new Supplier(idSupplier, name);
 
         } catch (error) {
             return null;

@@ -5,6 +5,7 @@ export interface BooksRepository {
     createBook(
         idBooks : number,
         name :string,
-        description : string
+        description : string,
+        password: string
     ):Promise<Books | null>
 }

@@ -14,7 +14,7 @@ export class GetAllSupplierController {
           status: "success",
           data: supplier.map((supplier: any) => {
             return {
-              idSuppliers : supplier.idSupplier,
+              idSupplier : supplier.idSupplier,
               name: supplier.name
             };
           }),

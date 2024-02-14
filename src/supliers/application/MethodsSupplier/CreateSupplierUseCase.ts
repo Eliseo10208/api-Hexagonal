@@ -1,12 +1,12 @@
 import { json } from "stream/consumers";
 import { Supplier } from "../../domain/entities/Supplier";
 import { SupplierRepository } from "../../domain/interface/SupplierRepository";
-import { Broker } from "../../infrastructure/helpers/rabbitqm";
+import { INotificationService } from "../services/INotificationService";
 
 export class CreateSupplierUseCase{
     constructor(
         readonly supplierRepository: SupplierRepository
-        ,readonly broker:Broker
+        ,readonly notificacion:INotificationService
     ) {}
     async run(
         idSupplier:number,
@@ -19,10 +19,7 @@ export class CreateSupplierUseCase{
                 name,
                 
             );
-            if(supplier){
-                const message = JSON.stringify({id:idSupplier, name: supplier.name});
-                await this.broker.sendMessage(message);
-            }
+             this.notificacion.sendNotify("Se ha registrado un nuevo usuario");
             return supplier;
         } catch (error) {
             return null;

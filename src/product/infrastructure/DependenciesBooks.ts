@@ -6,7 +6,7 @@ import { EncryptService } from "./helpers/EncryptService";
 import { MysqlBooksRepository } from "./repository/MysqlBooksRepository";
 
 export const mysqlBooksRepository = new MysqlBooksRepository();
-const encryptService =  new EncryptService();
+const encryptService =  new EncryptService()
 export const createBooksUseCase = new CreateBooksUseCase(
   mysqlBooksRepository,encryptService
 );
